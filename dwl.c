@@ -386,7 +386,6 @@ static void setcursorshape(struct wl_listener *listener, void *data);
 static void setfloating(Client *c, int floating);
 static void setfullscreen(Client *c, int fullscreen);
 static void setsticky(Client *c, int sticky);
-static void setgamma(struct wl_listener *listener, void *data);
 static void setgaps(int oh, int ov, int ih, int iv);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
@@ -3146,17 +3145,6 @@ setfullscreen(Client *c, int fullscreen)
 	}
 	arrange(c->mon);
 	drawbars();
-}
-
-void
-setgamma(struct wl_listener *listener, void *data)
-{
-	struct wlr_gamma_control_manager_v1_set_gamma_event *event = data;
-	Monitor *m = event->output->data;
-	if (!m)
-		return;
-	m->gamma_lut_changed = 1;
-	wlr_output_schedule_frame(m->wlr_output);
 }
 
 void
