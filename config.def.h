@@ -4,20 +4,20 @@
                         ((hex >> 8) & 0xFF) / 255.0f, \
                         (hex & 0xFF) / 255.0f }
 /* appearance */
-static const int sloppyfocus               = 1;  /* focus follows mouse */
+static const int sloppyfocus               = 0;  /* focus follows mouse */
 static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
 static const int enablegaps                = 1;  /* 1 means gaps are enabled */
-static const int smartgaps                 = 0;  /* 1 means no outer gap when there is only one window */
+static const int smartgaps                 = 1;  /* 1 means no outer gap when there is only one window */
 static const int monoclegaps               = 0;  /* 1 means outer gaps in monocle layout */
-static const unsigned int borderpx         = 1;  /* border pixel of windows */
+static const unsigned int borderpx         = 2;  /* border pixel of windows */
+static const unsigned int gappih           = 0; /* horiz inner gap between windows */
+static const unsigned int gappiv           = 0; /* vert inner gap between windows */
+static const unsigned int gappoh           = 0; /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov           = 0; /* vert outer gap between windows and screen edge */
 static const int showbar                   = 1; /* 0 means no bar */
 static const int topbar                    = 1; /* 0 means bottom bar */
-static const char *fonts[]                 = {"monospace:size=10"};
-static const unsigned int gappih           = 10; /* horiz inner gap between windows */
-static const unsigned int gappiv           = 10; /* vert inner gap between windows */
-static const unsigned int gappoh           = 10; /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov           = 10; /* vert outer gap between windows and screen edge */
-static const float rootcolor[]             = COLOR(0x222222ff);
+static const char *fonts[]                 = {"SourceCodePro:size=13:weight=Medium"};
+static const float rootcolor[]             = COLOR(0x000000ff);
 static const float bordercolor[]           = COLOR(0x444444ff);
 static const float focuscolor[]            = COLOR(0x005577ff);
 static const float urgentcolor[]           = COLOR(0xff0000ff);
@@ -25,8 +25,8 @@ static const float urgentcolor[]           = COLOR(0xff0000ff);
 static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You can also use glsl colors */
 static uint32_t colors[][3]                = {
 	/*               fg          bg          border    */
-	[SchemeNorm] = { 0xbbbbbbff, 0x222222ff, 0x444444ff },
-	[SchemeSel]  = { 0xeeeeeeff, 0x005577ff, 0x005577ff },
+	[SchemeNorm] = { 0xbbbbbbff, 0x000000ff, 0x000000ff },
+	[SchemeSel]  = { 0xeeeeeeff, 0x427b58ff, 0x427b58ff },
 	[SchemeUrg]  = { 0,          0,          0x770000ff },
 };
 
@@ -38,7 +38,19 @@ static int log_level = WLR_ERROR;
 
 /* Autostart */
 static const char *const autostart[] = {
-        "wbg", "/path/to/your/image", NULL,
+        "fcitx5", "-d", NULL,
+        "swayidle", NULL,
+        "gammastep", "-O", "5000", NULL,
+        "wl-paste", "--watch", "cliphist", "store", NULL,
+        "kanshi", NULL,
+        "sh", "-c", "swaybg -i ${HOME}/.local/share/wallpaper -m fill", NULL,
+        //"sh", "-c", "swaybg -c 000000", NULL,
+        "dunst", NULL,
+        // Disable due to footclient flickering
+	    "foots", NULL,
+        "lucia", "-d", NULL,
+	    "wobd", NULL,
+        "mbs-cron", NULL,
         NULL /* terminate */
 };
 
@@ -46,6 +58,14 @@ static const Rule rules[] = {
 	/* app_id             title       tags mask     isfloating   monitor */
 	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
 	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
+	{ NULL,          "Floating_Term", 0,            1,           -1 },
+	{ "Floating_IMG",     NULL,       0,            1,           -1 },
+	{ "file-*",           NULL,       0,            1,           -1 }, /* GIMP file import/export */
+	{ "script-fu",        NULL,       0,            1,           -1 }, /* GIMP gegl operations */
+    { "lighting","Lighting Effects",  0,            1,           -1 }, /* GIMP */
+    //{ "kdenlive",         NULL,       0,            1,           -1 }, /* kdenlive file chooser (disabled for bugs)*/
+	{ "electron","Open Folder",       0,            1,           -1 }, /* code-oss */
+	{ "org.fcitx.fcitx5-config-qt", NULL, 0,        1,           -1 },
     /* default/example rule: can be changed but cannot be eliminated; at least one rule must exist */
 };
 
@@ -69,7 +89,7 @@ static const MonitorRule monrules[] = {
    /* name        mfact  nmaster scale layout       rotate/reflect                x    y
     * example of a HiDPI laptop monitor:
     { "eDP-1",    0.5f,  1,      2,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 }, */
-	{ NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
+	{ NULL,       0.5f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
 	/* default monitor rule: can be changed but cannot be eliminated; at least one monitor rule must exist */
 };
 
@@ -79,11 +99,11 @@ static const struct xkb_rule_names xkb_rules = {
 	/* example:
 	.options = "ctrl:nocaps",
 	*/
-	.options = NULL,
+	.options = "caps:swapescape,altwin:swap_alt_win",
 };
 
-static const int repeat_rate = 25;
-static const int repeat_delay = 600;
+static const int repeat_rate = 30;
+static const int repeat_delay = 200;
 
 /* Trackpad */
 static const int tap_to_click = 1;
@@ -129,20 +149,20 @@ LIBINPUT_CONFIG_TAP_MAP_LMR -- 1/2/3 finger tap maps to left/middle/right
 static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TAP_MAP_LRM;
 
 /* If you want to use the windows key for MODKEY, use WLR_MODIFIER_LOGO */
-#define MODKEY WLR_MODIFIER_ALT
+#define MODKEY WLR_MODIFIER_LOGO
 
 #define TAGKEYS(KEY,SKEY,TAG) \
 	{ MODKEY,                    KEY,            view,            {.ui = 1 << TAG} }, \
-	{ MODKEY|WLR_MODIFIER_CTRL,  KEY,            toggleview,      {.ui = 1 << TAG} }, \
+	{ WLR_MODIFIER_CTRL,         KEY,            toggleview,      {.ui = 1 << TAG} }, \
 	{ MODKEY|WLR_MODIFIER_SHIFT, SKEY,           tag,             {.ui = 1 << TAG} }, \
-	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT,SKEY,toggletag, {.ui = 1 << TAG} }
+	{ MODKEY|WLR_MODIFIER_CTRL,  KEY,            toggletag,       {.ui = 1 << TAG} }
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
 static const char *termcmd[] = { "foot", NULL };
-static const char *menucmd[] = { "wmenu-run", NULL };
+static const char *menucmd[] = { "wmenu-run-color", NULL };
 
 #include "shiftview.c"
 
@@ -150,52 +170,80 @@ static const Key keys[] = {
 	/* Note that Shift changes certain key codes: 2 -> at, etc. */
 	/* modifier                  key                  function          argument */
 	{ MODKEY,                    XKB_KEY_p,           spawn,            {.v = menucmd} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Return,      spawn,            {.v = termcmd} },
+	{ MODKEY,                    XKB_KEY_Return,      spawn,            {.v = termcmd} },
+	{ MODKEY,                    XKB_KEY_v,           spawn,            SHCMD("footclient -T \"Floating_Term\" -o colors.alpha=0.9 abduco -A dvtm dvtm-status") },
+	{ MODKEY,                    XKB_KEY_r,           spawn,            SHCMD("foot sh -c 'sleep 0.03 && lf'") },
+	{ MODKEY,                    XKB_KEY_q,           spawn,            SHCMD("qutebrowser") },
+	{ MODKEY,                    XKB_KEY_minus,       spawn,            SHCMD("${HOME}/.local/bin/audio sink --minus10") },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_underscore,  spawn,            SHCMD("${HOME}/.local/bin/audio sink --minus") },
+	{ MODKEY,                    XKB_KEY_equal,       spawn,            SHCMD("${HOME}/.local/bin/audio sink --plus10") },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_plus,        spawn,            SHCMD("${HOME}/.local/bin/audio sink --plus") },
+	{ MODKEY,                    XKB_KEY_BackSpace,   spawn,            SHCMD("${HOME}/.local/bin/audio sink --mute") },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_minus,       spawn,            SHCMD("${HOME}/.local/bin/audio source --minus10") },
+	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT,XKB_KEY_underscore,   spawn,  SHCMD("${HOME}/.local/bin/audio source --minus") },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_equal,       spawn,            SHCMD("${HOME}/.local/bin/audio source --plus10") },
+	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT,XKB_KEY_plus,spawn,   SHCMD("${HOME}/.local/bin/audio source --plus") },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_BackSpace,   spawn,            SHCMD("${HOME}/.local/bin/audio source --mute") },
+	{ MODKEY,                    XKB_KEY_bracketleft, spawn,            SHCMD("${HOME}/.local/bin/bright --minus10") },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_braceleft,   spawn,            SHCMD("${HOME}/.local/bin/bright --minus") },
+	{ MODKEY,                    XKB_KEY_bracketright,spawn,            SHCMD("${HOME}/.local/bin/bright --plus10") },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_braceright,  spawn,            SHCMD("${HOME}/.local/bin/bright --plus") },
+	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT,XKB_KEY_braceleft,    spawn,  SHCMD("${HOME}/.local/bin/bright --min") },
+	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT,XKB_KEY_braceright,   spawn,  SHCMD("${HOME}/.local/bin/bright --max") },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Q,           spawn,            SHCMD("${HOME}/.local/bin/exiland -dwl") },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_W,           spawn,            SHCMD("waylock -init-color 0x000000 -input-color 0x005577 -fail-color 0xcc3333") },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_E,           spawn,            SHCMD("${HOME}/.local/bin/hibe") },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_M,           spawn,            SHCMD("${HOME}/.local/bin/mag") },
+	{ WLR_MODIFIER_CTRL,         XKB_KEY_space,       spawn,            SHCMD("fcitx5-remote -t") },
+	{ MODKEY,                    XKB_KEY_n,           spawn,            SHCMD("dunstctl history-pop") },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_N,           spawn,            SHCMD("dunstctl close") },
+	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT,XKB_KEY_N,    spawn,  SHCMD("dunstctl close-all") },
+	{ MODKEY,                    XKB_KEY_y,           spawn,            SHCMD("${HOME}/.local/bin/shoot") },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Y,           spawn,            SHCMD("${HOME}/.local/bin/shoot --geo") },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_y,           spawn,            SHCMD("${HOME}/.local/bin/shoot --all") },
+	{ MODKEY,                    XKB_KEY_c,           spawn,            SHCMD("${HOME}/.local/bin/clip") },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_c,           spawn,            SHCMD("${HOME}/.local/bin/clip --wipe") },
+	{ MODKEY,                    XKB_KEY_a,           spawn,            SHCMD("${HOME}/.local/bin/address") },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_A,           spawn,            SHCMD("${HOME}/.local/bin/address --record") },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_a,           spawn,            SHCMD("${HOME}/.local/bin/address --multi") },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_space,       spawn,            SHCMD("mpc --toggle && ${HOME}/.local/bin/lsmus") },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_p,           spawn,            SHCMD("mpc prev") },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_n,           spawn,            SHCMD("mpc next") },
+    { MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_s,           spawn,            SHCMD("${HOME}/.local/bin/wsk") },
+    { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_B,           spawn,            SHCMD("pgrep gammastep && killall gammastep || gammastep -O 5000") },
+    { MODKEY,                    XKB_KEY_backslash,   spawn,            SHCMD("wlrctl pointer move 9999 9999") },
 	{ MODKEY,                    XKB_KEY_b,           togglebar,        {0} },
 	{ MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
 	{ MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_Left,        focusdir,         {.ui = 0} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_Right,       focusdir,         {.ui = 1} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_Up,          focusdir,         {.ui = 2} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_Down,        focusdir,         {.ui = 3} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Left,        swapdir,          {.ui = 0} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Right,       swapdir,          {.ui = 1} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Up,          swapdir,          {.ui = 2} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Down,        swapdir,          {.ui = 3} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_h,           focusdir,         {.ui = 0} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_l,           focusdir,         {.ui = 1} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_k,           focusdir,         {.ui = 2} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_j,           focusdir,         {.ui = 3} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_H,           swapdir,          {.ui = 0} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_L,           swapdir,          {.ui = 1} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_K,           swapdir,          {.ui = 2} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_J,           swapdir,          {.ui = 3} },
 	{ MODKEY,                    XKB_KEY_i,           incnmaster,       {.i = +1} },
 	{ MODKEY,                    XKB_KEY_d,           incnmaster,       {.i = -1} },
 	{ MODKEY,                    XKB_KEY_h,           setmfact,         {.f = -0.05f} },
 	{ MODKEY,                    XKB_KEY_l,           setmfact,         {.f = +0.05f} },
-	{ MODKEY|WLR_MODIFIER_LOGO,  XKB_KEY_h,           incgaps,          {.i = +1 } },
-	{ MODKEY|WLR_MODIFIER_LOGO,  XKB_KEY_l,           incgaps,          {.i = -1 } },
-	{ MODKEY|WLR_MODIFIER_LOGO|WLR_MODIFIER_SHIFT,    XKB_KEY_H,        incogaps,      {.i = +1 } },
-	{ MODKEY|WLR_MODIFIER_LOGO|WLR_MODIFIER_SHIFT,    XKB_KEY_L,        incogaps,      {.i = -1 } },
-	{ MODKEY|WLR_MODIFIER_LOGO|WLR_MODIFIER_CTRL,     XKB_KEY_h,        incigaps,      {.i = +1 } },
-	{ MODKEY|WLR_MODIFIER_LOGO|WLR_MODIFIER_CTRL,     XKB_KEY_l,        incigaps,      {.i = -1 } },
-	{ MODKEY|WLR_MODIFIER_LOGO,  XKB_KEY_0,           togglegaps,       {0} },
-	{ MODKEY|WLR_MODIFIER_LOGO|WLR_MODIFIER_SHIFT,    XKB_KEY_parenright,defaultgaps,  {0} },
-	{ MODKEY,                    XKB_KEY_y,           incihgaps,        {.i = +1 } },
-	{ MODKEY,                    XKB_KEY_o,           incihgaps,        {.i = -1 } },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_y,           incivgaps,        {.i = +1 } },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_o,           incivgaps,        {.i = -1 } },
-	{ MODKEY|WLR_MODIFIER_LOGO,  XKB_KEY_y,           incohgaps,        {.i = +1 } },
-	{ MODKEY|WLR_MODIFIER_LOGO,  XKB_KEY_o,           incohgaps,        {.i = -1 } },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Y,           incovgaps,        {.i = +1 } },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_O,           incovgaps,        {.i = -1 } },
-	{ MODKEY,                    XKB_KEY_Return,      zoom,             {0} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_bracketleft, incgaps,          {.i = +1 } },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_bracketright ,incgaps,         {.i = -1 } },
+	{ MODKEY,                    XKB_KEY_z,           zoom,             {0} },
 	{ MODKEY,                    XKB_KEY_Tab,         view,             {0} },
-	{ MODKEY,                    XKB_KEY_a,          shiftview,      { .i = -1 } },
-	{ MODKEY,                    XKB_KEY_semicolon,  shiftview,      { .i = 1 } },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_c,           killclient,       {0} },
+	{ MODKEY,                    XKB_KEY_apostrophe,  shiftview,        { .i = 1 } },
+	{ MODKEY,                    XKB_KEY_semicolon,   shiftview,        { .i = -1 } },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_S,           togglesticky,     {0} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_C,           killclient,       {0} },
 	{ MODKEY,                    XKB_KEY_t,           setlayout,        {.v = &layouts[0]} },
 	{ MODKEY,                    XKB_KEY_f,           setlayout,        {.v = &layouts[1]} },
 	{ MODKEY,                    XKB_KEY_m,           setlayout,        {.v = &layouts[2]} },
 	{ MODKEY,                    XKB_KEY_u,           setlayout,        {.v = &layouts[3]} },
-	{ MODKEY,                    XKB_KEY_o,           setlayout,        {.v = &layouts[4]} },
-	{ MODKEY,                    XKB_KEY_a,           setlayout,        {.v = &layouts[5]} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_U,           setlayout,        {.v = &layouts[4]} },
+	{ MODKEY,                    XKB_KEY_o,           setlayout,        {.v = &layouts[5]} },
 	{ MODKEY,                    XKB_KEY_g,           setlayout,        {.v = &layouts[6]} },
-	{ MODKEY,                    XKB_KEY_space,       setlayout,        {0} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,       togglefloating,   {0} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,       setlayout,        {0} },
+	{ MODKEY,                    XKB_KEY_space,       togglefloating,   {0} },
 	{ MODKEY,                    XKB_KEY_e,           togglefullscreen, {0} },
 	{ MODKEY,                    XKB_KEY_0,           view,             {.ui = ~0} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright,  tag,              {.ui = ~0} },
@@ -212,7 +260,6 @@ static const Key keys[] = {
 	TAGKEYS(          XKB_KEY_7, XKB_KEY_ampersand,                     6),
 	TAGKEYS(          XKB_KEY_8, XKB_KEY_asterisk,                      7),
 	TAGKEYS(          XKB_KEY_9, XKB_KEY_parenleft,                     8),
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_q,           quit,             {0} },
 
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_Terminate_Server, quit, {0} },
