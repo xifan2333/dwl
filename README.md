@@ -15,6 +15,9 @@ I'm using the bar patch with `damblocks`([codeberg](https://codeberg.org/unixcha
 For a build without the `bar.patch`, checkout the `nobar` branch. You can use any compatible bar.
 
 
+### Patches applied
+1. [bar](https://codeberg.org/dwl/dwl-patches/patch/bar/bar.patch)
+
 
 ### known issues
 - footclient window flickering, see [dwl#705](https://codeberg.org/dwl/dwl/issues/705)
