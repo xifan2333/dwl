@@ -205,7 +205,7 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_a,           spawn,            SHCMD("${HOME}/.local/bin/address") },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_A,           spawn,            SHCMD("${HOME}/.local/bin/address --record") },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_a,           spawn,            SHCMD("${HOME}/.local/bin/address --multi") },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_space,       spawn,            SHCMD("mpc --toggle && ${HOME}/.local/bin/lsmus") },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_space,       spawn,            SHCMD("mpc toggle && ${HOME}/.local/bin/lsmus") },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_p,           spawn,            SHCMD("mpc prev") },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_n,           spawn,            SHCMD("mpc next") },
     { MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_s,           spawn,            SHCMD("${HOME}/.local/bin/wsk") },
