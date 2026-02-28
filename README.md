@@ -24,6 +24,7 @@ For a build without the `bar.patch`, checkout the `nobar` branch. You can use an
 6. [genericgaps](https://codeberg.org/dwl/dwl-patches/patch/genericgaps/genericgaps.patch)
 7. [alwayscenter](https://codeberg.org/dwl/dwl-patches/patch/alwayscenter/alwayscenter.patch)
 8. [text-input](https://codeberg.org/dwl/dwl-patches/patch/text-input/text-input-0.8.patch)
+9. [bottomstack](https://codeberg.org/dwl/dwl-patches/patch/bottomstack/bottomstack-0.8.patch)
 
 
 ### known issues
