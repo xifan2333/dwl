@@ -51,6 +51,7 @@ static const char *const autostart[] = {
         "lucia", "-d", NULL,
 	    "wobd", NULL,
         "mbs-cron", NULL,
+        "sh", "-c", "${HOME}/.local/bin/damblocks-mpdd", NULL,
         NULL /* terminate */
 };
 
