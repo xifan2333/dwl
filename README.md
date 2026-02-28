@@ -22,6 +22,7 @@ For a build without the `bar.patch`, checkout the `nobar` branch. You can use an
 4. [pertag](https://codeberg.org/dwl/dwl-patches/patch/pertag/pertag.patch)
 5. [swapandfocusdir](https://codeberg.org/dwl/dwl-patches/patch/swapandfocusdir/swapandfocusdir.patch)
 6. [genericgaps](https://codeberg.org/dwl/dwl-patches/patch/genericgaps/genericgaps.patch)
+7. [alwayscenter](https://codeberg.org/dwl/dwl-patches/patch/alwayscenter/alwayscenter.patch)
 
 
 ### known issues
