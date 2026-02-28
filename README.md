@@ -17,6 +17,7 @@ For a build without the `bar.patch`, checkout the `nobar` branch. You can use an
 
 ### Patches applied
 1. [bar](https://codeberg.org/dwl/dwl-patches/patch/bar/bar.patch)
+2. [autostart](https://codeberg.org/dwl/dwl-patches/patch/autostart/autostart-0.8.patch)
 
 
 ### known issues
