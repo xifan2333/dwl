@@ -40,7 +40,7 @@ For a build without the `bar.patch`, checkout the `nobar` branch. You can use an
 dwl has the following dependencies:
 - libinput
 - wayland
-- wlroots0.18 (compiled with the libinput backend)
+- wlroots0.19 (compiled with the libinput backend)
 - xkbcommon
 - wayland-protocols (compile-time only)
 - pkg-config (compile-time only)
