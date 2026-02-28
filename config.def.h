@@ -38,19 +38,17 @@ static int log_level = WLR_ERROR;
 
 /* Autostart */
 static const char *const autostart[] = {
+        "gammastep", "-O", "5000", NULL,
+        "kanshi", NULL,
         "fcitx5", "-d", NULL,
         "swayidle", NULL,
-        "gammastep", "-O", "5000", NULL,
         "wl-paste", "--watch", "cliphist", "store", NULL,
-        "kanshi", NULL,
-        "sh", "-c", "swaybg -i ${HOME}/.local/share/wallpaper -m fill", NULL,
-        //"sh", "-c", "swaybg -c 000000", NULL,
         "dunst", NULL,
-        // Disable due to footclient flickering
-	    "foots", NULL,
-        "lucia", "-d", NULL,
-	    "wobd", NULL,
-        "mbs-cron", NULL,
+        "sh", "-c", "swaybg -i ${HOME}/.local/share/wallpaper -m fill", NULL,
+	    "sh", "-c", "${HOME}/.local/bin/foots", NULL,
+        "sh", "-c", "${HOME}/.local/bin/lucia -d", NULL,
+	    "sh", "-c", "${HOME}/.local/bin/wobd", NULL,
+        "sh", "-c", "${HOME}/.local/bin/mbs-cron", NULL,
         "sh", "-c", "${HOME}/.local/bin/damblocks-mpdd", NULL,
         NULL /* terminate */
 };
