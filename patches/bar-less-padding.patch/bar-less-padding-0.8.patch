@@ -1,0 +1,25 @@
+From d9376b041c1e52b928bfd1be8e2e4ab063bb2282 Mon Sep 17 00:00:00 2001
+From: nate zhou <gnuunixchad@outlook.com>
+Date: Sat, 28 Feb 2026 22:10:00 +0800
+Subject: [PATCH] Mod(dwl.c): reduce padding in tags for bar patch
+
+---
+ dwl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dwl.c b/dwl.c
+index 7b2abf5..01021e6 100644
+--- a/dwl.c
++++ b/dwl.c
+@@ -3213,7 +3213,7 @@ updatebar(Monitor *m)
+ 		die("Could not load font");
+ 
+ 	m->b.scale = m->wlr_output->scale;
+-	m->lrpad = m->drw->font->height;
++	m->lrpad = m->drw->font->height * 0.75;
+ 	m->b.height = m->drw->font->height + 2;
+ 	m->b.real_height = (int)((float)m->b.height / m->wlr_output->scale);
+ }
+-- 
+2.53.0
+
