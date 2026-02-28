@@ -18,14 +18,15 @@ For a build without the `bar.patch`, checkout the `nobar` branch. You can use an
 ### Patches applied
 1. [bar](https://codeberg.org/dwl/dwl-patches/patch/bar/bar.patch)
 2. [autostart](https://codeberg.org/dwl/dwl-patches/patch/autostart/autostart-0.8.patch)
-3. [sticky](https://codeberg.org/dwl/dwl-patches/patch/sticky/sticky.patch)
-4. [pertag](https://codeberg.org/dwl/dwl-patches/patch/pertag/pertag.patch)
-5. [swapandfocusdir](https://codeberg.org/dwl/dwl-patches/patch/swapandfocusdir/swapandfocusdir.patch)
-6. [genericgaps](https://codeberg.org/dwl/dwl-patches/patch/genericgaps/genericgaps.patch)
-7. [alwayscenter](https://codeberg.org/dwl/dwl-patches/patch/alwayscenter/alwayscenter.patch)
-8. [text-input](https://codeberg.org/dwl/dwl-patches/patch/text-input/text-input-0.8.patch)
-9. [bottomstack](https://codeberg.org/dwl/dwl-patches/patch/bottomstack/bottomstack-0.8.patch)
-10. [decklayout](https://codeberg.org/dwl/dwl-patches/patch/decklayout/decklayout-0.8.patch)
+3. [sticky](https://codeberg.org/dwl/dwl-patches/patch/sticky/sticky-0.8.patch)
+4. [shiftview](https://codeberg.org/dwl/dwl-patches/patch/shiftview/shiftview.patch)
+5. [pertag](https://codeberg.org/dwl/dwl-patches/patch/pertag/pertag.patch)
+6. [swapandfocusdir](https://codeberg.org/dwl/dwl-patches/patch/swapandfocusdir/swapandfocusdir-0.8.patch)
+7. [genericgaps](https://codeberg.org/dwl/dwl-patches/patch/genericgaps/genericgaps-0.8.patch)
+8. [alwayscenter](https://codeberg.org/dwl/dwl-patches/patch/alwayscenter/alwayscenter.patch)
+9. [text-input](./patches/text-input/text-input-0.8.patch)
+10. [bottomstack](https://codeberg.org/dwl/dwl-patches/patch/bottomstack/bottomstack-0.8.patch)
+11. [decklayout](https://codeberg.org/dwl/dwl-patches/patch/decklayout/decklayout-0.8.patch)
 
 
 ### known issues
