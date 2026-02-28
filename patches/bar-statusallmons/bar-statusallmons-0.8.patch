@@ -1,0 +1,32 @@
+From bae20dc9c2e99dd427e0bcdef54a0c11d6a24223 Mon Sep 17 00:00:00 2001
+From: nate zhou <gnuunixchad@outlook.com>
+Date: Sat, 28 Feb 2026 22:13:03 +0800
+Subject: [PATCH] Patch: bar-statusallmons-0.8.patch
+
+Apply this patch upon bar patch to draw the statusbar on all monitors.
+---
+ dwl.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/dwl.c b/dwl.c
+index 7b2abf5..3f534ca 100644
+--- a/dwl.c
++++ b/dwl.c
+@@ -1583,11 +1583,9 @@ drawbar(Monitor *m)
+ 		return;
+ 
+ 	/* draw status first so it can be overdrawn by tags later */
+-	if (m == selmon) { /* status is only drawn on selected monitor */
+-		drwl_setscheme(m->drw, colors[SchemeNorm]);
+-		tw = TEXTW(m, stext) - m->lrpad + 2; /* 2px right padding */
+-		drwl_text(m->drw, m->b.width - tw, 0, tw, m->b.height, 0, stext, 0);
+-	}
++	drwl_setscheme(m->drw, colors[SchemeNorm]);
++	tw = TEXTW(m, stext) - m->lrpad + 2; /* 2px right padding */
++	drwl_text(m->drw, m->b.width - tw, 0, tw, m->b.height, 0, stext, 0);
+ 
+ 	wl_list_for_each(c, &clients, link) {
+ 		if (c->mon != m)
+-- 
+2.53.0
+
