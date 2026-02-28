@@ -27,6 +27,7 @@ For a build without the `bar.patch`, checkout the `nobar` branch. You can use an
 9. [text-input](./patches/text-input/text-input-0.8.patch)
 10. [bottomstack](https://codeberg.org/dwl/dwl-patches/patch/bottomstack/bottomstack-0.8.patch)
 11. [decklayout](https://codeberg.org/dwl/dwl-patches/patch/decklayout/decklayout-0.8.patch)
+12. [gaplessgrid](https://codeberg.org/dwl/dwl-patches/patch/gaplessgrid/gaplessgrid-0.8.patch)
 
 
 ### known issues
